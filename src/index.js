@@ -33,7 +33,10 @@ class Search extends React.Component {
 class Result extends React.Component {
     render() {
         return (
-            <textarea> </textarea>
+            <div>
+                <h1>結果</h1>
+                <InputArea />
+            </div>
         );
     }
 
