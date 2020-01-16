@@ -2,20 +2,41 @@ import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+const SEARCH_BUTTON_TEXT_DEFAULT = '検索';
+const SEARCH_BUTTON_TEXT_RUNNING = '検索中...';
+
 class SearchButton extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            value: this.props.value,
+            disabled: this.props.disabled,
+        };
         this.handleClick = this.handleClick.bind(this)
     }
 
     handleClick(e) {
-        console.log(e.target);
+        let value = e.target.innerHTML === SEARCH_BUTTON_TEXT_DEFAULT ? SEARCH_BUTTON_TEXT_RUNNING : SEARCH_BUTTON_TEXT_DEFAULT;
+        this.setState({
+            value: value,
+            disabled: !e.target.disabled,
+        });
+        this.search();
         e.preventDefault();
+    }
+
+    search() {
+        console.log("search");
+        this.setState({
+            disabled: false
+        });
     }
 
     render() {
         return (
-            <button onClick={this.handleClick}>検索</button>
+            <button onClick={this.handleClick} disabled={this.state.disabled}>
+                {this.state.value}
+            </button>
         );
     }
 }
@@ -35,10 +56,10 @@ class InputArea extends React.Component {
         return (
             <form className="uk-grid-small uk-grid">
                 <div className="uk-width-1-2@s">
-                    <textarea 
+                    <textarea
                         value={this.state.value}
                         onChange={this.onChange}
-                        className="uk-textarea" 
+                        className="uk-textarea"
                         cols="10" rows="15">
                     </textarea>
                 </div>
@@ -51,7 +72,9 @@ class Search extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            textValue: '実験思考\n結局人生はアウトプットで決まる'
+            textValue: '実験思考\n結局人生はアウトプットで決まる',
+            buttonText: SEARCH_BUTTON_TEXT_DEFAULT,
+            buttonDisabled : false,
         }
     }
 
@@ -60,7 +83,7 @@ class Search extends React.Component {
             <div>
                 <h1>著者検索</h1>
                 <InputArea value={this.state.textValue} />
-                <SearchButton />
+                <SearchButton value={this.state.buttonText} disabled={this.state.disabled} />
             </div>
         );
     }
