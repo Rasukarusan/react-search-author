@@ -5,55 +5,6 @@ import ReactDOM from 'react-dom';
 const SEARCH_BUTTON_TEXT_DEFAULT = '検索';
 const SEARCH_BUTTON_TEXT_RUNNING = '検索中...';
 
-class SearchButton extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: this.props.value,
-            disabled: this.props.disabled,
-        };
-        this.handleClick = this.handleClick.bind(this)
-    }
-
-    handleClick(e) {
-        let value = e.target.innerHTML === SEARCH_BUTTON_TEXT_DEFAULT ?
-            SEARCH_BUTTON_TEXT_RUNNING : SEARCH_BUTTON_TEXT_DEFAULT;
-        this.setState({
-            value: value,
-            disabled: !e.target.disabled,
-        });
-        this.search();
-        e.preventDefault();
-    }
-
-    search() {
-        fetch('https://www.googleapis.com/books/v1/volumes?q=実験思考')
-        .then(res => res.json())
-        .then(
-            (result) => {
-                this.setState({
-                    value: SEARCH_BUTTON_TEXT_DEFAULT,
-                    disabled: false
-                });
-            },
-            (error) => {
-                this.setState({
-                    value: SEARCH_BUTTON_TEXT_DEFAULT,
-                    disabled: false
-                });
-            }
-        )
-    }
-
-    render() {
-        return (
-            <button onClick={this.handleClick} disabled={this.state.disabled}>
-                {this.state.value}
-            </button>
-        );
-    }
-}
-
 class InputArea extends React.Component {
     constructor(props) {
         super(props);
@@ -81,22 +32,86 @@ class InputArea extends React.Component {
     }
 }
 
+class SearchButton extends React.Component {
+    render() {
+        return (
+            <button onClick={this.props.onClick(this)} disabled={this.props.disabled}>
+                {this.props.value}
+            </button>
+        );
+    }
+}
+
 class Search extends React.Component {
+    render() {
+        return (
+            <div>
+                <h1>著者検索</h1>
+                <InputArea value={this.props.inputText} />
+                <SearchButton
+                    value={this.props.searchButtonText}
+                    disabled={this.props.searchButtonDisabled}
+                    onClick={this.props.onClick}
+                />
+            </div>
+        );
+    }
+}
+
+class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            textValue: '実験思考\n結局人生はアウトプットで決まる',
-            buttonText: SEARCH_BUTTON_TEXT_DEFAULT,
-            buttonDisabled : false,
-        }
+            inputText: '実験思考\n結局人生はアウトプットで決まる',
+            searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
+            searchButtonDisabled : false,
+        };
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(e) {
+        let searchButtonText = e.target.innerHTML === SEARCH_BUTTON_TEXT_DEFAULT ?
+            SEARCH_BUTTON_TEXT_RUNNING : SEARCH_BUTTON_TEXT_DEFAULT;
+        this.setState({
+            searchButtonText: searchButtonText,
+            searchButtonDisabled: !e.target.disabled
+        });
+        let titles = this.state.inputText.split('\n');
+        titles.forEach(title => this.search(title));
+        e.preventDefault();
+    }
+
+    search(title) {
+        fetch('https://www.googleapis.com/books/v1/volumes?q=' + title)
+        .then(res => res.json())
+        .then(
+            (result) => {
+                console.log(result);
+                this.setState({
+                    searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
+                    searchButtonDisabled: false
+                });
+            },
+            (error) => {
+                this.setState({
+                    searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
+                    searchButtonDisabled: false
+                });
+            }
+        )
     }
 
     render() {
         return (
             <div>
-                <h1>著者検索</h1>
-                <InputArea value={this.state.textValue} />
-                <SearchButton value={this.state.buttonText} disabled={this.state.disabled} />
+                <Search
+                    inputText={this.state.inputText}
+                    searchButtonText={this.state.searchButtonText}
+                    searchButtonDisabled={this.state.searchButtonDisabled}
+                    onClick={() => this.handleClick}
+                />
+                <hr />
+                <Result />
             </div>
         );
     }
@@ -112,16 +127,6 @@ class Result extends React.Component {
         );
     }
 
-}
-
-function App() {
-    return (
-        <div>
-            <Search />
-            <hr />
-            <Result />
-        </div>
-    );
 }
 
 ReactDOM.render(
