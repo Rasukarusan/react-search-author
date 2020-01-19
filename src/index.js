@@ -16,7 +16,8 @@ class SearchButton extends React.Component {
     }
 
     handleClick(e) {
-        let value = e.target.innerHTML === SEARCH_BUTTON_TEXT_DEFAULT ? SEARCH_BUTTON_TEXT_RUNNING : SEARCH_BUTTON_TEXT_DEFAULT;
+        let value = e.target.innerHTML === SEARCH_BUTTON_TEXT_DEFAULT ?
+            SEARCH_BUTTON_TEXT_RUNNING : SEARCH_BUTTON_TEXT_DEFAULT;
         this.setState({
             value: value,
             disabled: !e.target.disabled,
@@ -26,10 +27,22 @@ class SearchButton extends React.Component {
     }
 
     search() {
-        console.log("search");
-        this.setState({
-            disabled: false
-        });
+        fetch('https://www.googleapis.com/books/v1/volumes?q=実験思考')
+        .then(res => res.json())
+        .then(
+            (result) => {
+                this.setState({
+                    value: SEARCH_BUTTON_TEXT_DEFAULT,
+                    disabled: false
+                });
+            },
+            (error) => {
+                this.setState({
+                    value: SEARCH_BUTTON_TEXT_DEFAULT,
+                    disabled: false
+                });
+            }
+        )
     }
 
     render() {
