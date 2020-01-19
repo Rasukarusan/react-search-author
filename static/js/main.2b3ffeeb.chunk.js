@@ -1,2 +1,0 @@
-(this["webpackJsonpreact-blog-assets-page"]=this["webpackJsonpreact-blog-assets-page"]||[]).push([[0],{3:function(e,t,n){e.exports=n(4)},4:function(e,t,n){"use strict";n.r(t);var s=n(0),a=n.n(s),o=n(2),c=n.n(o);n(9);c.a.render(a.a.createElement("h1",null,"Hello React!"),document.getElementById("root"))},9:function(e,t,n){}},[[3,1,2]]]);
-//# sourceMappingURL=main.2b3ffeeb.chunk.js.map
