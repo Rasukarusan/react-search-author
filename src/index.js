@@ -74,7 +74,8 @@ class App extends React.Component {
             SEARCH_BUTTON_TEXT_RUNNING : SEARCH_BUTTON_TEXT_DEFAULT;
         this.setState({
             searchButtonText: searchButtonText,
-            searchButtonDisabled: !e.target.disabled
+            searchButtonDisabled: !e.target.disabled,
+            result: '',
         });
         let titles = this.state.inputText.split('\n');
         titles.forEach(title => this.search(title));
