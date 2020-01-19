@@ -65,8 +65,8 @@ class App extends React.Component {
             inputText: '実験思考\n結局人生はアウトプットで決まる',
             searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
             searchButtonDisabled : false,
+            result: '',
         };
-        this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(e) {
@@ -85,11 +85,16 @@ class App extends React.Component {
         fetch('https://www.googleapis.com/books/v1/volumes?q=' + title)
         .then(res => res.json())
         .then(
-            (result) => {
-                console.log(result);
+            (json) => {
+                let item = json.items[0];
+                let author = item.volumeInfo.authors.pop();
+                let category = item.volumeInfo.categories.pop();
+                let result = title + '\t' + author + '\t' + category + '\n';
+
                 this.setState({
                     searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
-                    searchButtonDisabled: false
+                    searchButtonDisabled: false,
+                    result: this.state.result + result,
                 });
             },
             (error) => {
@@ -108,10 +113,10 @@ class App extends React.Component {
                     inputText={this.state.inputText}
                     searchButtonText={this.state.searchButtonText}
                     searchButtonDisabled={this.state.searchButtonDisabled}
-                    onClick={() => this.handleClick}
+                    onClick={() => this.handleClick.bind(this)}
                 />
                 <hr />
-                <Result />
+                <Result result={this.state.result}/>
             </div>
         );
     }
@@ -122,11 +127,26 @@ class Result extends React.Component {
         return (
             <div>
                 <h1>結果</h1>
-                <InputArea />
+                <ResultTextArea value={this.props.result} />
             </div>
         );
     }
+}
 
+class ResultTextArea extends React.Component {
+    render() {
+        return(
+            <form className="uk-grid-small uk-grid">
+                <div className="uk-width-1-2@s">
+                    <textarea
+                        defaultValue={this.props.value}
+                        className="uk-textarea"
+                        cols="10" rows="15">
+                    </textarea>
+                </div>
+            </form>
+        );
+    }
 }
 
 ReactDOM.render(
