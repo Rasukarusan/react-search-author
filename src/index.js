@@ -49,10 +49,8 @@ class App extends React.Component {
     }
 
     handleClick(e) {
-        let searchButtonText = e.target.innerHTML === SEARCH_BUTTON_TEXT_DEFAULT ?
-            SEARCH_BUTTON_TEXT_RUNNING : SEARCH_BUTTON_TEXT_DEFAULT;
         this.setState({
-            searchButtonText: searchButtonText,
+            searchButtonText: SEARCH_BUTTON_TEXT_RUNNING,
             searchButtonDisabled: !e.target.disabled,
             result: '',
         });
