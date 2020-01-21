@@ -78,7 +78,8 @@ class App extends React.Component {
             searchButtonDisabled: !e.target.disabled,
             result: '',
         });
-        let titles = this.state.inputText.split('\n');
+        // 改行区切りで配列化し、空文字要素を削除
+        let titles = this.state.inputText.split('\n').filter(v => v);
         titles.forEach(title => this.search(title));
         e.preventDefault();
     }
