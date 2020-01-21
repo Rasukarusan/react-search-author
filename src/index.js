@@ -6,47 +6,24 @@ const SEARCH_BUTTON_TEXT_DEFAULT = '検索';
 const SEARCH_BUTTON_TEXT_RUNNING = '検索中...';
 const MESSAGE_NOT_FOUND = '取得できませんでした';
 
-class InputArea extends React.Component {
-    render() {
-        return (
-            <form className="uk-grid-small uk-grid">
-                <div className="uk-width-1-2@s">
-                    <textarea
-                        value={this.props.value}
-                        onChange={this.props.onChange(this)}
-                        className="uk-textarea"
-                        cols="10" rows="15">
-                    </textarea>
-                </div>
-            </form>
-        );
-    }
-}
-
-class SearchButton extends React.Component {
-    render() {
-        return (
-            <button onClick={this.props.onClick(this)} disabled={this.props.disabled}>
-                {this.props.value}
-            </button>
-        );
-    }
-}
-
 class Search extends React.Component {
     render() {
         return (
             <div>
                 <h1>著者検索</h1>
-                <InputArea 
-                    value={this.props.inputText} 
-                    onChange={this.props.onChange}
-                />
-                <SearchButton
-                    value={this.props.searchButtonText}
-                    disabled={this.props.searchButtonDisabled}
-                    onClick={this.props.onClick}
-                />
+                <form className="uk-grid-small uk-grid">
+                    <div className="uk-width-1-2@s">
+                        <textarea
+                            value={this.props.inputText}
+                            onChange={this.props.onChange(this)}
+                            className="uk-textarea"
+                            cols="10" rows="15">
+                        </textarea>
+                    </div>
+                </form>
+                <button onClick={this.props.onClick(this)} disabled={this.props.searchButtonDisabled}>
+                    {this.props.searchButtonText}
+                </button>
             </div>
         );
     }
