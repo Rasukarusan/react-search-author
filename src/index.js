@@ -63,7 +63,11 @@ class App extends React.Component {
     }
 
     onChangeInputArea(e) {
-        this.setState({inputText: e.target.value});
+        let inputText = e.target.value;
+        this.setState({
+            inputText: inputText,
+            searchButtonDisabled: inputText === '' ? true : false,
+        });
     }
 
     handleClick(e) {
