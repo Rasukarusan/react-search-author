@@ -6,23 +6,13 @@ const SEARCH_BUTTON_TEXT_DEFAULT = '検索';
 const SEARCH_BUTTON_TEXT_RUNNING = '検索中...';
 
 class InputArea extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {value: this.props.value}
-        this.onChange = this.onChange.bind(this)
-    }
-
-    onChange(e) {
-        this.setState({ value: e.target.value });
-    }
-
     render() {
         return (
             <form className="uk-grid-small uk-grid">
                 <div className="uk-width-1-2@s">
                     <textarea
-                        value={this.state.value}
-                        onChange={this.onChange}
+                        value={this.props.value}
+                        onChange={this.props.onChange(this)}
                         className="uk-textarea"
                         cols="10" rows="15">
                     </textarea>
@@ -47,7 +37,10 @@ class Search extends React.Component {
         return (
             <div>
                 <h1>著者検索</h1>
-                <InputArea value={this.props.inputText} />
+                <InputArea 
+                    value={this.props.inputText} 
+                    onChange={this.props.onChange}
+                />
                 <SearchButton
                     value={this.props.searchButtonText}
                     disabled={this.props.searchButtonDisabled}
@@ -67,6 +60,10 @@ class App extends React.Component {
             searchButtonDisabled : false,
             result: '',
         };
+    }
+
+    onChangeInputArea(e) {
+        this.setState({inputText: e.target.value});
     }
 
     handleClick(e) {
@@ -112,6 +109,7 @@ class App extends React.Component {
             <div>
                 <Search
                     inputText={this.state.inputText}
+                    onChange={() => this.onChangeInputArea.bind(this)}
                     searchButtonText={this.state.searchButtonText}
                     searchButtonDisabled={this.state.searchButtonDisabled}
                     onClick={() => this.handleClick.bind(this)}
