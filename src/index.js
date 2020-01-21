@@ -135,28 +135,33 @@ class App extends React.Component {
 }
 
 class Result extends React.Component {
+    constructor(props) {
+        super(props);
+        this.textArea = React.createRef();
+    }
+
+    onClick() {
+        this.textArea.current.select();
+        document.execCommand('copy');
+        this.textArea.current.focus();
+    }
+
     render() {
         return (
             <div>
                 <h1>結果</h1>
-                <ResultTextArea value={this.props.result} />
+                <form className="uk-grid-small uk-grid">
+                    <div className="uk-width-1-2@s">
+                        <textarea
+                            defaultValue={this.props.result}
+                            ref={this.textArea}
+                            className="uk-textarea"
+                            cols="10" rows="15">
+                        </textarea>
+                    </div>
+                </form>
+                <button onClick={this.onClick.bind(this)}>結果をコピー</button>
             </div>
-        );
-    }
-}
-
-class ResultTextArea extends React.Component {
-    render() {
-        return(
-            <form className="uk-grid-small uk-grid">
-                <div className="uk-width-1-2@s">
-                    <textarea
-                        defaultValue={this.props.value}
-                        className="uk-textarea"
-                        cols="10" rows="15">
-                    </textarea>
-                </div>
-            </form>
         );
     }
 }
