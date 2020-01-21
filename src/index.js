@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 
 const SEARCH_BUTTON_TEXT_DEFAULT = '検索';
 const SEARCH_BUTTON_TEXT_RUNNING = '検索中...';
+const MESSAGE_NOT_FOUND = '取得できませんでした';
 
 class InputArea extends React.Component {
     render() {
@@ -89,11 +90,18 @@ class App extends React.Component {
         .then(res => res.json())
         .then(
             (json) => {
+                if(!json.items) {
+                    this.setState({
+                        searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
+                        searchButtonDisabled: false,
+                        result: '検索結果が0でした',
+                    });
+                    return;
+                }
                 let item = json.items[0];
-                let author = item.volumeInfo.authors.pop();
-                let category = item.volumeInfo.categories.pop();
+                let author = item.volumeInfo.authors ? item.volumeInfo.authors.pop() : MESSAGE_NOT_FOUND;
+                let category = item.volumeInfo.categories ? item.volumeInfo.categories.pop() : MESSAGE_NOT_FOUND;
                 let result = title + '\t' + author + '\t' + category + '\n';
-
                 this.setState({
                     searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
                     searchButtonDisabled: false,
