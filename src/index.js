@@ -6,6 +6,13 @@ const SEARCH_BUTTON_TEXT_DEFAULT = '検索';
 const SEARCH_BUTTON_TEXT_RUNNING = '検索中...';
 const MESSAGE_NOT_FOUND = '取得できませんでした';
 
+function jsonToResult(json) {
+    let item = json.items[0];
+    let author = item.volumeInfo.authors ? item.volumeInfo.authors.pop() : MESSAGE_NOT_FOUND;
+    let category = item.volumeInfo.categories ? item.volumeInfo.categories.pop() : MESSAGE_NOT_FOUND;
+    return '\t' + author + '\t' + category + '\n';
+}
+
 class Search extends React.Component {
     render() {
         return (
@@ -73,10 +80,7 @@ class App extends React.Component {
                     });
                     return;
                 }
-                let item = json.items[0];
-                let author = item.volumeInfo.authors ? item.volumeInfo.authors.pop() : MESSAGE_NOT_FOUND;
-                let category = item.volumeInfo.categories ? item.volumeInfo.categories.pop() : MESSAGE_NOT_FOUND;
-                let result = title + '\t' + author + '\t' + category + '\n';
+                let result = title + jsonToResult(json);
                 this.setState({
                     searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
                     searchButtonDisabled: false,
