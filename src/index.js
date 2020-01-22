@@ -90,7 +90,8 @@ class App extends React.Component {
             (error) => {
                 this.setState({
                     searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
-                    searchButtonDisabled: false
+                    searchButtonDisabled: false,
+                    result: 'リクエストに失敗しました',
                 });
             }
         )
