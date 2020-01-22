@@ -69,7 +69,7 @@ class App extends React.Component {
                     this.setState({
                         searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
                         searchButtonDisabled: false,
-                        result: '検索結果が0でした',
+                        result: title + '\t' + MESSAGE_NOT_FOUND + '\t' + MESSAGE_NOT_FOUND + '\n',
                     });
                     return;
                 }
