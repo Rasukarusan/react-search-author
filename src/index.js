@@ -1,10 +1,63 @@
-import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import styled, { css } from 'styled-components'
 
 const SEARCH_BUTTON_TEXT_DEFAULT = '検索';
 const SEARCH_BUTTON_TEXT_RUNNING = '検索中...';
 const MESSAGE_NOT_FOUND = '取得できませんでした';
+
+const Container = styled.div`
+    text-align: center;
+`;
+
+const Hr = styled.hr`
+    height: 20px;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px 0 0 0;
+    border-radius: 200px;
+
+    &::before {
+        display: block;
+        content: "";
+        height: 20px;
+        margin-top: -20px;
+        border-style: solid;
+        border-color: black;
+        border-width: 0 0 1px 0;
+        border-radius: 100px;
+    }
+`;
+
+const Title = styled.h1`
+    font-size: 5.5em;
+    text-align: center;
+    color: palevioletred;
+`;
+
+const Textarea = styled.textarea`
+    font-size: 1em;
+    border: 1px solid gray;
+    border-radius: 3px;
+    width: 1000px;
+    height: 400px;
+    max-width: 80%;
+`;
+
+const Button = styled.button`
+    background: transparent;
+    border-radius: 3px;
+    border: 2px solid palevioletred;
+    color: palevioletred;
+    margin: 0.5em 1em;
+    padding: 0.25em 1em;
+    font-size: 30px;
+
+    ${props => props.primary && css`
+      background: palevioletred;
+      color: white;
+    `}
+`;
 
 function jsonToResult(json) {
     let item = json.items[0];
@@ -17,20 +70,18 @@ class Search extends React.Component {
     render() {
         return (
             <div>
-                <h1>著者検索</h1>
-                <form className="uk-grid-small uk-grid">
-                    <div className="uk-width-1-2@s">
-                        <textarea
+                <Title>著者検索</Title>
+                <form>
+                    <div>
+                        <Textarea
                             value={this.props.inputText}
-                            onChange={this.props.onChange(this)}
-                            className="uk-textarea"
-                            cols="10" rows="15">
-                        </textarea>
+                            onChange={this.props.onChange(this)}>
+                        </Textarea>
                     </div>
                 </form>
-                <button onClick={this.props.onClick(this)} disabled={this.props.searchButtonDisabled}>
+                <Button primary onClick={this.props.onClick(this)} disabled={this.props.searchButtonDisabled}>
                     {this.props.searchButtonText}
-                </button>
+                </Button>
             </div>
         );
     }
@@ -99,7 +150,7 @@ class App extends React.Component {
 
     render() {
         return (
-            <div>
+            <Container>
                 <Search
                     inputText={this.state.inputText}
                     onChange={() => this.onChangeInputArea.bind(this)}
@@ -107,9 +158,9 @@ class App extends React.Component {
                     searchButtonDisabled={this.state.searchButtonDisabled}
                     onClick={() => this.handleClick.bind(this)}
                 />
-                <hr />
+                <Hr />
                 <Result result={this.state.result}/>
-            </div>
+            </Container>
         );
     }
 }
@@ -129,18 +180,17 @@ class Result extends React.Component {
     render() {
         return (
             <div>
-                <h1>結果</h1>
-                <form className="uk-grid-small uk-grid">
-                    <div className="uk-width-1-2@s">
-                        <textarea
+                <Title>結果</Title>
+                <form>
+                    <div>
+                        <Textarea
                             defaultValue={this.props.result}
                             ref={this.textArea}
-                            className="uk-textarea"
-                            cols="10" rows="15">
-                        </textarea>
+                            cols="100" rows="15">
+                        </Textarea>
                     </div>
                 </form>
-                <button onClick={this.onClick.bind(this)}>結果をコピー</button>
+                <Button onClick={this.onClick.bind(this)}>結果をコピー</Button>
             </div>
         );
     }
