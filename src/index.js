@@ -185,14 +185,11 @@ class Search extends React.Component {
         return (
             <div>
                 <Title>著者検索</Title>
-                <form>
-                    <div>
-                        <Textarea
-                            value={this.props.inputText}
-                            onChange={this.props.onChange(this)}>
-                        </Textarea>
-                    </div>
-                </form>
+                <Textarea
+                    value={this.props.inputText}
+                    onChange={this.props.onChange(this)}>
+                </Textarea>
+                <br />
                 <Button primary onClick={this.props.onClick(this)} disabled={this.props.searchButtonDisabled}>
                     {this.props.searchButtonText}
                 </Button>
@@ -296,15 +293,12 @@ class Result extends React.Component {
         return (
             <div>
                 <Title>結果</Title>
-                <form>
-                    <div>
-                        <Textarea
-                            defaultValue={this.props.result}
-                            ref={this.textArea}
-                            cols="100" rows="15">
-                        </Textarea>
-                    </div>
-                </form>
+                <Textarea
+                    defaultValue={this.props.result}
+                    ref={this.textArea}
+                    cols="100" rows="15">
+                </Textarea>
+                <br />
                 <Button onClick={this.onClick.bind(this)}>結果をコピー</Button>
             </div>
         );
