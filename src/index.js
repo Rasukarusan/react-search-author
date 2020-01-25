@@ -11,7 +11,7 @@ const Container = styled.div`
     background: #4e54c8;
     background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
     width: 100vw;
-    height:100vh;
+    height:120vh;
 `;
 
 const Hr = styled.hr`
