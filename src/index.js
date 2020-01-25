@@ -57,6 +57,11 @@ const Button = styled.button`
     padding: 0.25em 1em;
     font-size: 1.5em;
 
+    &:disabled {
+        background: gray;
+        border: none;
+    }
+
     ${props => props.primary && css`
       background: palevioletred;
       color: white;
