@@ -17,7 +17,7 @@ const Container = styled.div`
 const Hr = styled.hr`
     height: 20px;
     border-style: solid;
-    border-color: black;
+    border-color: gray;
     border-width: 1px 0 0 0;
     border-radius: 200px;
 
@@ -26,7 +26,7 @@ const Hr = styled.hr`
         content: "";
         height: 20px;
         margin-top: -20px;
-        border-style: solid;
+        border-style: gray;
         border-color: black;
         border-width: 0 0 1px 0;
         border-radius: 100px;
@@ -34,7 +34,7 @@ const Hr = styled.hr`
 `;
 
 const Title = styled.h1`
-    font-size: 5.5em;
+    font-size: 2.5em;
     text-align: center;
     color: palevioletred;
 `;
@@ -43,9 +43,9 @@ const Textarea = styled.textarea`
     font-size: 1em;
     border: 1px solid gray;
     border-radius: 3px;
-    width: 1000px;
-    height: 400px;
-    max-width: 80%;
+    width: 50vw;
+    height: 30vh;
+    max-width: 80vw;
 `;
 
 const Button = styled.button`
@@ -55,7 +55,7 @@ const Button = styled.button`
     color: palevioletred;
     margin: 0.5em 1em;
     padding: 0.25em 1em;
-    font-size: 30px;
+    font-size: 1.5em;
 
     ${props => props.primary && css`
       background: palevioletred;
