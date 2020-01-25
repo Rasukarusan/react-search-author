@@ -11,6 +11,8 @@ Searching authors from a book of title.
 
 ## Demo
 
+![demo](https://user-images.githubusercontent.com/17779386/73118371-88bdb600-3f96-11ea-8dbf-e03ac19cc34b.gif)
+
 https://rasukarusan.github.io/react-search-author/
 
 ## Install
