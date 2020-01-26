@@ -211,7 +211,7 @@ class App extends React.Component {
             inputText: '実験思考\n結局人生はアウトプットで決まる',
             searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
             searchButtonDisabled : false,
-            result: '',
+            results: [],
         };
     }
 
@@ -227,39 +227,37 @@ class App extends React.Component {
         this.setState({
             searchButtonText: SEARCH_BUTTON_TEXT_RUNNING,
             searchButtonDisabled: !e.target.disabled,
-            result: '',
+            results: [],
         });
         // 改行区切りで配列化し、空文字要素を削除
         let titles = this.state.inputText.split('\n').filter(v => v);
-        titles.forEach(title => this.search(title));
+        titles.forEach((title, index) => this.search(title, index));
         e.preventDefault();
     }
 
-    search(title) {
+    search(title, index) {
         fetch('https://www.googleapis.com/books/v1/volumes?q=' + title)
         .then(res => res.json())
         .then(
             (json) => {
+                let result = {};
                 if(!json.items) {
-                    this.setState({
-                        searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
-                        searchButtonDisabled: false,
-                        result: title + '\t' + MESSAGE_NOT_FOUND + '\t' + MESSAGE_NOT_FOUND + '\n',
-                    });
-                    return;
+                    result = {index: index, detail: title + '\t' + MESSAGE_NOT_FOUND + '\t' + MESSAGE_NOT_FOUND + '\n'};
+                }else {
+                    result = {index: index, detail: title + jsonToResult(json)};
                 }
-                let result = title + jsonToResult(json);
+                this.state.results.push(result);
                 this.setState({
                     searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
                     searchButtonDisabled: false,
-                    result: this.state.result + result,
+                    results: this.state.results,
                 });
             },
             (error) => {
                 this.setState({
                     searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
                     searchButtonDisabled: false,
-                    result: 'リクエストに失敗しました',
+                    results: {index: index, detail: 'リクエストに失敗しました'},
                 });
             }
         )
@@ -277,10 +275,20 @@ class App extends React.Component {
                 />
                 <Circles />
                 <Hr />
-                <Result result={this.state.result}/>
+                <Result results={this.state.results}/>
             </Container>
         );
     }
+}
+
+function getResult(results) {
+    if (!results.length) return '';
+    // fetchで取得した結果は入力されたテキストと順番がバラバラなので、
+    // 入力テキストと順番を統一させるためソートする
+    results.sort((a, b) => a.index - b.index);
+    let details = '';
+    results.forEach((result) => details += result.detail);
+    return details;
 }
 
 class Result extends React.Component {
@@ -300,7 +308,7 @@ class Result extends React.Component {
             <div>
                 <Title>結果</Title>
                 <Textarea
-                    defaultValue={this.props.result}
+                    defaultValue={getResult(this.props.results)}
                     ref={this.textArea}
                     cols="100" rows="15">
                 </Textarea>
