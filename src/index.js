@@ -212,6 +212,7 @@ class App extends React.Component {
             searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
             searchButtonDisabled : false,
             results: [],
+            resultText: '',
         };
     }
 
@@ -251,6 +252,7 @@ class App extends React.Component {
                     searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
                     searchButtonDisabled: false,
                     results: this.state.results,
+                    resultText: getResultText(this.state.results),
                 });
             },
             (error) => {
@@ -258,9 +260,14 @@ class App extends React.Component {
                     searchButtonText: SEARCH_BUTTON_TEXT_DEFAULT,
                     searchButtonDisabled: false,
                     results: {index: index, detail: 'リクエストに失敗しました'},
+                    resultText: getResultText(this.state.results),
                 });
             }
         )
+    }
+
+    onChangeResultText(e) {
+        this.setState({resultText: e.target.value});
     }
 
     render() {
@@ -275,20 +282,20 @@ class App extends React.Component {
                 />
                 <Circles />
                 <Hr />
-                <Result results={this.state.results}/>
+                <Result value={this.state.resultText} onChange={this.onChangeResultText.bind(this)}/>
             </Container>
         );
     }
 }
 
-function getResult(results) {
+function getResultText(results) {
     if (!results.length) return '';
     // fetchで取得した結果は入力されたテキストと順番がバラバラなので、
     // 入力テキストと順番を統一させるためソートする
     results.sort((a, b) => a.index - b.index);
-    let details = '';
-    results.forEach((result) => details += result.detail);
-    return details;
+    let resultText = '';
+    results.forEach((result) => resultText += result.detail);
+    return resultText;
 }
 
 class Result extends React.Component {
@@ -308,8 +315,9 @@ class Result extends React.Component {
             <div>
                 <Title>結果</Title>
                 <Textarea
-                    defaultValue={getResult(this.props.results)}
+                    value={this.props.value}
                     ref={this.textArea}
+                    onChange = {this.props.onChange}
                     cols="100" rows="15">
                 </Textarea>
                 <br />
