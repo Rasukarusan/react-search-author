@@ -7,7 +7,7 @@ Searching authors from a book of title.
 
 - Using Google Books API.
 - This site building from react.
-- The purpose is that paste to google spreadsheet. So the result is`title \t author \t category`.
+- The purpose is that paste to google spreadsheet. So the format of result is`title \t author \t category`.
 
 ## Demo
 
